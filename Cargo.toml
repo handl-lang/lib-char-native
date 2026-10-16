@@ -7,5 +7,5 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-handl-platform = { path = "../platform" }
-serde_json = { workspace = true }
+handl-platform = { git = "https://github.com/handl-lang/platform" }
+serde_json = "1"
