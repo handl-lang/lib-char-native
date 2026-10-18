@@ -27,11 +27,10 @@ mod ops;
 
 pub use module::CharModule;
 
-/// The `char` abstraction contract (`handl-packages/char/char.hnl`) —
-/// axioms and laws every `char` backend must satisfy. This crate owns the
-/// package (ADR-0128 §`.hnl` ownership: one `include_str!` per package, in
-/// the crate that owns it); other consumers take this `pub const`.
-pub const CHAR_HNL: &str = include_str!("../../../handl-packages/char/char.hnl");
+/// The `char` abstraction contract (`lib-char`) — axioms and laws every
+/// `char` backend must satisfy. Extracted to its own repo (ADR-0128);
+/// re-exported here so downstream consumers keep using this `pub const`.
+pub const CHAR_HNL: &str = handl_lib_char::CHAR_HNL;
 
 /// The `char-native` interface declaration
 /// (`handl-packages/char-native/char-native.hnl`).
