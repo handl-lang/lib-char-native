@@ -35,7 +35,7 @@ pub const CHAR_HNL: &str = handl_lib_char::CHAR_HNL;
 /// The `char-native` interface declaration
 /// (`handl-packages/char-native/char-native.hnl`).
 pub const CHAR_NATIVE_HNL: &str =
-    include_str!("../../../handl-packages/char-native/char-native.hnl");
+    include_str!("../handl-packages/char-native/char-native.hnl");
 
 #[cfg(test)]
 mod tests;
