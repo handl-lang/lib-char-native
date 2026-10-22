@@ -3,7 +3,7 @@ name = "handl-plugin-lib-char-native"
 version = "0.1.0"
 edition = "2024"
 description = "Native `char` module — the Rust `std::char` backend for the `char` contract"
-license = "MIT OR Apache-2.0"
+license = "MIT"
 repository = "https://github.com/handl-lang/lib-char-native"
 
 [dependencies]
