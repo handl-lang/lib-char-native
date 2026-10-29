@@ -30,7 +30,8 @@ pub use module::CharModule;
 /// The `char` abstraction contract (`lib-char`) — axioms and laws every
 /// `char` backend must satisfy. Extracted to its own repo (ADR-0128);
 /// re-exported here so downstream consumers keep using this `pub const`.
-pub const CHAR_HNL: &str = handl_lib_char::CHAR_HNL;
+pub const CHAR_HNL: &str =
+    include_str!(concat!(env!("OUT_DIR"), "/lib-char/src/index.hnl"));
 
 /// The `char-native` interface declaration
 /// (`handl-packages/char-native/char-native.hnl`).
