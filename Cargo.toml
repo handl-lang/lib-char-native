@@ -11,8 +11,6 @@ handl-platform = { git = "https://github.com/handl-lang/host", branch = "main" }
 handl-lib-char = { git = "https://github.com/handl-lang/lib-char", branch = "main" }
 serde_json = "1"
 
-[patch."https://github.com/handl-lang/lib-char"]
-handl-lib-char = { path = "../lib-char" }
 
 [patch."https://github.com/handl-lang/host"]
 handl-platform = { path = "../host/crates/platform" }
