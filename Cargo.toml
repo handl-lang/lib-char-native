@@ -5,6 +5,9 @@ edition = "2024"
 description = "Native `char` module — the Rust `std::char` backend for the `char` contract"
 license = "MIT"
 repository = "https://github.com/handl-lang/lib-char-native"
+readme = "README.md"
+homepage = "https://github.com/handl-lang/lib-char-native"
+documentation = "https://handl-lang.github.io/docs/lib-char-native/"
 
 [dependencies]
 handl-ops = { git = "https://github.com/handl-lang/kernel", branch = "main" }
