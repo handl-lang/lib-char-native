@@ -6,24 +6,57 @@
 
 use serde_json::json;
 
-use crate::CharModule;
-use handl_platform::Module;
+use handl_ops::{OpContext, OpError};
+
+use crate::ops::char_op_registry;
+
+/// The ops are pure — a context that rejects any capability use.
+struct NullCtx;
+
+impl OpContext for NullCtx {
+    fn eval_expr(
+        &mut self,
+        _expr: &str,
+        _vars: &[(String, serde_json::Value)],
+    ) -> Result<serde_json::Value, OpError> {
+        Err(OpError::Other("no eval in tests".into()))
+    }
+
+    fn try_call_value(
+        &mut self,
+        _callee: &serde_json::Value,
+        _args: &[serde_json::Value],
+    ) -> Option<Result<serde_json::Value, OpError>> {
+        None
+    }
+}
+
+fn registry() -> std::sync::Arc<handl_ops::OpRegistry> {
+    std::sync::Arc::new(char_op_registry())
+}
 
 fn call(name: &str, args: &[serde_json::Value]) -> serde_json::Value {
-    let f = CharModule
-        .function(name)
+    let op = registry()
+        .get(&format!("char.{name}"))
         .unwrap_or_else(|| panic!("char.{name} must exist"));
-    f.call(args, &mut handl_platform::EvalContext::new())
+    op.call(args, &mut NullCtx)
         .unwrap_or_else(|e| panic!("char.{name}({args:?}) failed: {e}"))
 }
 
 fn call_err(name: &str, args: &[serde_json::Value]) -> String {
-    let f = CharModule
-        .function(name)
+    let op = registry()
+        .get(&format!("char.{name}"))
         .unwrap_or_else(|| panic!("char.{name} must exist"));
-    f.call(args, &mut handl_platform::EvalContext::new())
-        .unwrap_err()
-        .to_string()
+    op.call(args, &mut NullCtx).unwrap_err().to_string()
+}
+
+#[test]
+fn registry_covers_all_declared_ops() {
+    let reg = char_op_registry();
+    for name in crate::CHAR_OPS {
+        assert!(reg.contains(name), "missing op {name}");
+    }
+    assert_eq!(reg.len(), crate::CHAR_OPS.len());
 }
 
 #[test]

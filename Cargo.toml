@@ -7,12 +7,11 @@ license = "MIT"
 repository = "https://github.com/handl-lang/lib-char-native"
 
 [dependencies]
-handl-platform = { git = "https://github.com/handl-lang/host", branch = "main" }
+handl-ops = { git = "https://github.com/handl-lang/kernel", branch = "main" }
 serde_json = "1"
 
-
-[patch."https://github.com/handl-lang/host"]
-handl-platform = { path = "../host/crates/platform" }
+[patch."https://github.com/handl-lang/kernel"]
+handl-ops = { path = "../kernel/crates/handl-ops" }
 
 [build-dependencies]
 handl-pkg-vendor = { path = "../host/crates/pkg-vendor" }

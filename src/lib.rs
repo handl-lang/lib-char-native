@@ -3,7 +3,9 @@
 //! The native `char` module: the Rust `std::char` backend for the `char`
 //! contract (`handl-packages/char/char.hnl`).
 //!
-//! Provides 18 per-character atom functions:
+//! Provides 18 per-character atom functions, implemented as kernel-ABI
+//! [`handl_ops::Op`]s and registered by [`char_op_registry`] under their
+//! qualified `char.*` names ([`CHAR_OPS`]):
 //!
 //! - `char.is_whitespace`, `is_alpha`, `is_numeric`, `is_alnum`,
 //!   `is_uppercase`, `is_lowercase` — category atoms.
@@ -21,22 +23,24 @@
 //! is written purely against `char.*`, so a different backend
 //! (`char-ascii`, `char-js`, `char-icu`) can be swapped in without
 //! touching a single string algorithm.
+//!
+//! This crate depends only on the kernel op ABI (`handl-ops`); the
+//! host-shaped `char` module wrapper (`CharModule`, a `handl-platform`
+//! `Module`) lives in `handl-plugin-lib-handl`, which imports
+//! [`char_op_registry`] via `OpRegistry::import_kernel`.
 
-mod module;
-mod ops;
+pub mod ops;
 
-pub use module::CharModule;
+pub use ops::{CHAR_OPS, char_op_registry};
 
 /// The `char` abstraction contract (`lib-char`) — axioms and laws every
 /// `char` backend must satisfy. Extracted to its own repo (ADR-0128);
 /// re-exported here so downstream consumers keep using this `pub const`.
-pub const CHAR_HNL: &str =
-    include_str!(concat!(env!("OUT_DIR"), "/lib-char/src/index.hnl"));
+pub const CHAR_HNL: &str = include_str!(concat!(env!("OUT_DIR"), "/lib-char/src/index.hnl"));
 
 /// The `char-native` interface declaration
 /// (`handl-packages/char-native/char-native.hnl`).
-pub const CHAR_NATIVE_HNL: &str =
-    include_str!("../handl-packages/char-native/char-native.hnl");
+pub const CHAR_NATIVE_HNL: &str = include_str!("../handl-packages/char-native/char-native.hnl");
 
 #[cfg(test)]
 mod tests;
