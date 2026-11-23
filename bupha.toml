@@ -6,7 +6,7 @@
 
 [[repos]]
 name = "handl-lang/lib-char-native"
-dir = "/home/luis/GitHub/handl-lang/lib-char-native"
+dir = "~//GitHub/handl-lang/lib-char-native"
 branch = "refs/heads/main"
   [repos.runner]
   kind = "script"
