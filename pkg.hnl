@@ -1,0 +1,13 @@
+-- lib-char-native: the `char-native` module — the Rust `std::char`
+-- backend for the `char` contract. Transitional layout: the .hnl
+-- surface is `handl-packages/char-native/char-native.hnl`; the impl
+-- is the `handl-plugin-lib-char-native` crate under `src/`.
+{
+  deps: { char: "branch:main" },
+  modules: ["char-native"],
+  name: "char-native",
+  description: "Rust std::char backend for the char contract — Unicode-semantics char.* ops over handl-packages/char-native.",
+  license: "MIT",
+  keywords: ["char", "unicode", "backend", "rust", "handl"],
+  homepage: "https://github.com/handl-lang/lib-char-native",
+}
