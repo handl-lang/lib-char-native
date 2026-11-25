@@ -2,6 +2,7 @@
 -- backend for the `char` contract. Transitional layout: the .hnl
 -- surface is `handl-packages/char-native/char-native.hnl`; the impl
 -- is the `handl-plugin-lib-char-native` crate under `src/`.
+-- test_coverage "none": comment-only interface doc — impl is the Rust char-native crate (cargo test).
 {
   deps: { char: "branch:main" },
   modules: ["char-native"],
@@ -10,4 +11,5 @@
   license: "MIT",
   keywords: ["char", "unicode", "backend", "rust", "handl"],
   homepage: "https://github.com/handl-lang/lib-char-native",
+  test_coverage: "none",
 }

@@ -67,6 +67,23 @@ if [ "${#sources[@]}" -eq 0 ] && [ "${#tests[@]}" -eq 0 ]; then
   exit 0
 fi
 
+# Coverage floor: a repo with gateable `.hnl` sources must carry at
+# least one `*.test.hnl` (any dialect — file presence is the contract;
+# dialect-skipped tests are a separate migration gap). Surfaces that
+# are declarations only — contract axioms, generated bindings,
+# comment-only doc files — opt out in pkg.hnl:
+#   test_coverage: "none",   -- <reason>
+test_dirs=()
+if declare -p scan_dirs >/dev/null 2>&1; then test_dirs=("${scan_dirs[@]}"); else test_dirs=("$SRC_DIR"); fi
+test_files=$(find "${test_dirs[@]}" -name '*.test.hnl' 2>/dev/null | wc -l)
+test_files=${test_files//[[:space:]]/}
+if [ "$test_files" -eq 0 ] && ! grep -qE 'test_coverage:[[:space:]]*"none"' pkg.hnl 2>/dev/null; then
+  echo "hnl gate FAILED: .hnl sources but no *.test.hnl under ${test_dirs[*]}." >&2
+  echo "  add a test file, or declare test_coverage: \"none\" in pkg.hnl" >&2
+  echo "  (with a -- comment saying why the surface is untestable)." >&2
+  exit 1
+fi
+
 echo "== hnl typecheck (${#sources[@]} sources, ${#tests[@]} test files, ${skipped} dialect skipped) =="
 "$HNL" typecheck "${sources[@]}" ${tests[@]+"${tests[@]}"}
 
