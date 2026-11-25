@@ -397,3 +397,31 @@ pub fn char_op_registry() -> OpRegistry {
     registry.register("char.from_chars", Arc::new(FromChars));
     registry
 }
+
+// ---------------------------------------------------------------------------
+// Atom-provider self-registration (P-013 phase-2a, proposal-0012)
+// ---------------------------------------------------------------------------
+//
+// This crate submits one `KernelAtomProvider` so dep-binding can pair
+// `atoms.yaml` with `char_impls()` without a hand table row. The
+// inventory only sees submissions from crates that are *linked*: any
+// consumer that references `char_impls`/`char_op_registry` (e.g.
+// `plugin-lib-handl`'s `CharModule`) already pulls this object in, so
+// no extra anchor call is needed today. `__atom_provider_link_anchor`
+// exists for future consumers that want the provider without the
+// registry — keep it in this file, next to `submit!`, so the archive
+// member that carries the registration is the one referenced.
+
+inventory::submit! {
+    handl_ops::KernelAtomProvider {
+        modules: &["char"],
+        atoms_yaml: crate::CHAR_ATOMS_YAML,
+        impls: char_impls,
+    }
+}
+
+/// Link anchor for the `KernelAtomProvider` submission above — see the
+/// comment block. Referencing this fn pulls the object containing
+/// `inventory::submit!` into the final artifact.
+#[doc(hidden)]
+pub fn __atom_provider_link_anchor() {}
