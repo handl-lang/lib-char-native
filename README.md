@@ -11,7 +11,7 @@ resolve them from sibling checkouts.
 handl-packages/char-native/   the .hnl package
 src/                          the Rust plugin crate (lib.rs, ops.rs, tests.rs)
 scripts/hnl-gate.sh           the gate
-ci.sh                         bupha entry
+workflows/gate.yaml                         bupha entry (handl-gates)
 ```
 
 ## Gate
