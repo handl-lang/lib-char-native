@@ -31,7 +31,7 @@
 
 pub mod ops;
 
-pub use ops::{CHAR_OPS, char_op_registry};
+pub use ops::{CHAR_OPS, char_impls, char_op_registry};
 
 /// The `char` abstraction contract (`lib-char`) — axioms and laws every
 /// `char` backend must satisfy. Extracted to its own repo (ADR-0128);
@@ -41,6 +41,11 @@ pub const CHAR_HNL: &str = include_str!(concat!(env!("OUT_DIR"), "/lib-char/src/
 /// The `char-native` interface declaration
 /// (`handl-packages/char-native/char-native.hnl`).
 pub const CHAR_NATIVE_HNL: &str = include_str!("../handl-packages/char-native/char-native.hnl");
+
+/// The `char` atom spec (`atoms.yaml`, P-013/T-151) — the spec-driven
+/// source of truth for the 18 `char.*` atoms' names, signatures, and
+/// `impl:` keys into [`char_impls`].
+pub const CHAR_ATOMS_YAML: &str = include_str!("../atoms.yaml");
 
 #[cfg(test)]
 mod tests;

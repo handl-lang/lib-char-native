@@ -344,6 +344,35 @@ impl Op for FromChars {
 // Op Registry
 // ---------------------------------------------------------------------------
 
+/// The spec-driven impl table (P-013/T-151): `impl:` key → the kernel
+/// [`Op`] impl, consumed by `atoms::registry_from_atoms_kernel` via
+/// [`crate::CHAR_ATOMS_YAML`]. The `char_op_registry`/`CHAR_OPS`
+/// hand-wiring stays for consumers that still take the whole-registry
+/// path; adding an atom is one yaml line + one row here + one
+/// `char_op_registry` register line.
+pub fn char_impls() -> Vec<(&'static str, Arc<dyn Op>)> {
+    vec![
+        ("char_is_whitespace", Arc::new(IsWhitespace)),
+        ("char_is_alpha", Arc::new(IsAlpha)),
+        ("char_is_numeric", Arc::new(IsNumeric)),
+        ("char_is_alnum", Arc::new(IsAlnum)),
+        ("char_is_uppercase", Arc::new(IsUppercase)),
+        ("char_is_lowercase", Arc::new(IsLowercase)),
+        ("char_to_upper", Arc::new(ToUpper)),
+        ("char_to_lower", Arc::new(ToLower)),
+        ("char_to_title", Arc::new(ToTitle)),
+        ("char_code_point", Arc::new(CodePoint)),
+        ("char_from_code_point", Arc::new(FromCodePoint)),
+        ("char_at", Arc::new(At)),
+        ("char_slice", Arc::new(Slice)),
+        ("char_length", Arc::new(Length)),
+        ("char_concat", Arc::new(Concat)),
+        ("char_code_point_at", Arc::new(CodePointAt)),
+        ("char_chars", Arc::new(Chars)),
+        ("char_from_chars", Arc::new(FromChars)),
+    ]
+}
+
 /// Build the [`OpRegistry`] for `char`, registering the Rust handls under
 /// their qualified op names (`"char.<fn>"` — see [`CHAR_OPS`]).
 pub fn char_op_registry() -> OpRegistry {
