@@ -4,7 +4,9 @@
 # The IDL: name = dispatch key, sig = handl signature (~> canonical, from
 # the stripped `op` decls in handl-packages/char-native/char-native.hnl),
 # impl = key into `char_impls()` (src/ops.rs), `total` replaces
-# `guarantee: True` decl clauses. Consumed by the spec-driven registry
+# `guarantee: True` decl clauses, and `guarantee:` carries the non-`True`
+# postcondition texts verbatim (T-151 caps-as-data — carried, not yet
+# consumed). Consumed by the spec-driven registry
 # path (`atoms::registry_from_atoms_kernel`) in
 # `handl-plugin-lib-handl`'s `CharModule`.
 module: char
@@ -18,17 +20,16 @@ atoms:
   - { name: char.to_upper, sig: "String ~> String", impl: char_to_upper, total: true }
   - { name: char.to_lower, sig: "String ~> String", impl: char_to_lower, total: true }
   - { name: char.to_title, sig: "String ~> String", impl: char_to_title, total: true }
-  # `guarantee: Le(0, output)` / `LengthLe(output, input.0)` are not the
-  # `True` totality marker — those atoms stay unsigned-total (total
-  # omitted), same convention as other migrated specs.
-  - { name: char.code_point, sig: "String ~> Int", impl: char_code_point }
+  # Non-`True` guarantees are carried as `guarantee:` data (T-151), not
+  # the `total` flag — `total` stays the `guarantee: True` marker only.
+  - { name: char.code_point, sig: "String ~> Int", impl: char_code_point, guarantee: ["Le(0, output)"] }
   - { name: char.from_code_point, sig: "Int ~> String", impl: char_from_code_point, total: true }
   - { name: char.at, sig: "(String * Int) ~> String", impl: char_at, total: true }
-  - { name: char.slice, sig: "(String * Int * Int) ~> String", impl: char_slice }
+  - { name: char.slice, sig: "(String * Int * Int) ~> String", impl: char_slice, guarantee: ["LengthLe(output, input.0)"] }
   # `char.length` had a `cap`+`handle` but no `op` decl — no sig and no
   # guarantee — so it stays unsigned here too (same surface as before).
   - { name: char.length, impl: char_length }
   - { name: char.concat, sig: "(String * String) ~> String", impl: char_concat, total: true }
-  - { name: char.code_point_at, sig: "(String * Int) ~> Int", impl: char_code_point_at }
+  - { name: char.code_point_at, sig: "(String * Int) ~> Int", impl: char_code_point_at, guarantee: ["Le(0, output)"] }
   - { name: char.chars, sig: "String ~> (List String)", impl: char_chars, total: true }
   - { name: char.from_chars, sig: "(List String) ~> String", impl: char_from_chars, total: true }
